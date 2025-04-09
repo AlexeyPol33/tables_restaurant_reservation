@@ -9,7 +9,7 @@ Base = declarative_base()
 class Table(Base):
     __tablename__ = 'tables'
     id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(25))
+    name = Column(String(25), unique=True)
     seats = Column(Integer)
     location = Column(Text)
 
