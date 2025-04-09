@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.models.schemas import TableCreate, ReservationCreate
+from models.schemas import TableCreate, ReservationCreate
 from .views import create_table, tables_list, delete_table
 from .views import create_reservations, reservations_list, delete_reservations
 

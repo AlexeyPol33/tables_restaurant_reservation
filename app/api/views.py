@@ -1,34 +1,55 @@
-from fastapi import HTTPException, Depends
-from app.settings import engine
-from app.models import db_models, schemas
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse, Response
+from settings import engine
+from models import db_models, schemas
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from sqlalchemy.exc import IntegrityError
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 async def create_table(table: schemas.TableCreate):
-    return {'method':'create_table'}
+    async with AsyncSession(engine) as session:
+        try:
+            table = db_models.Table(**table.model_dump())
+            session.add(table)
+            await session.commit()
+        except IntegrityError:
+            return JSONResponse({'detail':'Error: The table name must be unique.'}, status_code=400)
+        except Exception as _: # Залогировать ошибку
+            logger.error(str(_))
+            return JSONResponse('Unexpected error', status_code=500)
 
-
-async def read_table(id: int):
-    return {'method':'read_table'}
+    return JSONResponse({'detail':'successfull'}, status_code=201)
 
 
 async def tables_list():
+    async with AsyncSession(engine) as session:
+        result = await session.execute(select(db_models.Table))
+        tables = result.scalars().all()
+        tables = [schemas.Table.model_validate(table).model_dump() for table in tables]
 
-    return {'method':'tables_list'}
+    return JSONResponse(content=tables, status_code=200)
 
 
 async def delete_table(id: int):
-    return {'method':'delete_table'}
+    async with AsyncSession(engine) as session:
+        table = await session.get(db_models.Table, id)
+        if table:
+            await session.delete(table)
+            await session.commit()
+        else:
+            return JSONResponse({'detail':'table not found'}, status_code=404)
+
+    return JSONResponse({'detail':'successfull'},status_code=200)
 
 
 async def create_reservations(reservations: schemas.ReservationCreate):
     return {'method':'create_reservations'}
-
-
-async def read_reservations(id: int):
-    return {'method':'read_reservations'}
 
 
 async def reservations_list():
