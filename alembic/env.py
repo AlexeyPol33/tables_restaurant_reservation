@@ -5,7 +5,7 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from app.models.db_models import Base, Table, Reservation
-from app.core.settings import DATABASE_URL
+from app.settings import DATABASE_URL
 
 from alembic import context
 
