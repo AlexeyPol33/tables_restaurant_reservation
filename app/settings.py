@@ -17,5 +17,9 @@ DB_PASSWORD = getenv('DB_PASSWORD','postgres')
 DB_HOST =  getenv('DB_HOST','localhost')
 DB_PORT = getenv('DB_PORT','5432')
 
-DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+if DEBUG:
+    DATABASE_URL = 'postgresql+asyncpg://postgres:postgres@localhost:5432/test'
+else:
+    DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
 engine = create_async_engine(DATABASE_URL)

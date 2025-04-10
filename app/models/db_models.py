@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, BigInteger, \
-ForeignKey, String, Double, DateTime, Text, Table, LargeBinary
+ForeignKey, String, Double, DateTime, Text
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -18,6 +18,6 @@ class Reservation(Base):
     __tablename__ = 'reservations'
     id = Column(Integer, autoincrement=True, primary_key=True)
     customer_name = Column(Text)
-    table_id = Column(Integer, ForeignKey('tables.id'))
+    table_id = Column(Integer, ForeignKey('tables.id', ondelete="CASCADE"), index=True)
     reservation_time = Column(DateTime)
     duration_minutes = Column(Integer)
