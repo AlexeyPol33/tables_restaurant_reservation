@@ -1,13 +1,9 @@
 import sys
 import os
-
 import pytest
 import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
 from app.models.db_models import Base
-from app.main import app
-from fastapi.testclient import TestClient
 
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))

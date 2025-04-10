@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 
 @pytest.fixture
 def reservation():
+    
     return {
         'customer_name': 'test_customer',
         'table_id': 1,
@@ -27,3 +28,6 @@ async def test_endpoint_ability(reservation):
         assert response_get.status_code == 200
         assert response_post.status_code == 200
         assert response_delete.status_code == 200
+
+async def table_not_found():
+    pass
