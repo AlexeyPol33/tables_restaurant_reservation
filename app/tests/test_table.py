@@ -24,5 +24,5 @@ async def test_endpoint_ability(table):
 
         response_get, response_post, response_delete = await asyncio.gather(response_get, response_post, response_delete)
         assert response_get.status_code == 200
-        assert response_post.status_code == 200
+        assert response_post.status_code == 201
         assert response_delete.status_code == 200

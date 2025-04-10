@@ -20,7 +20,7 @@ async def create_table(table: schemas.TableCreate):
             await session.commit()
         except IntegrityError:
             return JSONResponse({'detail':'Error: The table name must be unique.'}, status_code=400)
-        except Exception as _: # Залогировать ошибку
+        except Exception as _:
             logger.error(str(_))
             return JSONResponse('Unexpected error', status_code=500)
 
@@ -49,12 +49,18 @@ async def delete_table(id: int):
 
 
 async def create_reservations(reservations: schemas.ReservationCreate):
+    async with AsyncSession(engine) as session:
+        pass
     return {'method':'create_reservations'}
 
 
 async def reservations_list():
+    async with AsyncSession(engine) as session:
+        pass
     return {'method':'reservations_list'}
 
 
 async def delete_reservations(id: int):
+    async with AsyncSession(engine) as session:
+        pass
     return {'method':'delete_reservations'}
